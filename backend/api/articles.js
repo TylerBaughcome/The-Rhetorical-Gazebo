@@ -8,6 +8,7 @@ const auth= require("../middleware/auth");
 const Article = require("../models/Article");
 const axios = require("axios");
 const querystring = require("querystring");
+const {getPassword, parseDocument} = require("./util")
 router.post("/", auth, async (req, res)=> {
     //upload article to database
     try{
@@ -17,6 +18,9 @@ router.post("/", auth, async (req, res)=> {
     if(old_article){
         return res.status(400).json({error: {msg: "An article for that google document already exists."}});
     }
+    //Parse document here
+    const content = parseDocument(fields["content"]);
+    fields["content"] = content;
     const new_article = new Article(fields);
     await new_article.save();
     res.json({"request_fields": req.body.fields, "success": 1});

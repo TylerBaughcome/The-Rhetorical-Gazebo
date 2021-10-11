@@ -25,6 +25,10 @@ const RequestSchema = new Schema({
     type: String,
     required: true,
   },
+  content: {
+    type: String,
+    required: true 
+  },
   clicks: {
     type: Number,
     required: true,

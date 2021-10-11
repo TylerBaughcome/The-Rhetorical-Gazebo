@@ -18,12 +18,18 @@ Future<dynamic> getAllDocuments() async {
   }
 }
 
-Future<String> parseDocument(googleDocId) async {
-  var url = Uri.parse("https://docs.googleapis.com/v1/documents/$googleDocId");
-  var token = await readFromLocalStorage("google_access_token");
-  var response =
-      await http.get(url, headers: {"Authorization": "Bearer $token"});
-  var document = json.decode(response.body);
-  print("Document data: ${document["body"]["content"][0]}");
-  return "";
+Future<List<dynamic>> loadDocumentContent(googleDocId) async {
+  try {
+    var url =
+        Uri.parse("https://docs.googleapis.com/v1/documents/$googleDocId");
+    var token = await readFromLocalStorage("google_access_token");
+    var response =
+        await http.get(url, headers: {"Authorization": "Bearer $token"});
+    var document = json.decode(response.body);
+    var body = document["body"]["content"];
+    return body;
+  } catch (err) {
+    print("Failed to parse google document $googleDocId: $err");
+    return [];
+  }
 }

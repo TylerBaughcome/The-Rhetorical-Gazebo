@@ -8,20 +8,22 @@ import "../googleapi/drive.dart";
 Future<bool> _postArticle(Map<String, dynamic> fields) async {
   try {
     //parse data from google doc first => everything after first paragraph or title...
-    await parseDocument(fields["googleDocId"]);
-    return true;
+    List<dynamic> content = await loadDocumentContent(fields["googleDocId"]);
+    Map<String, dynamic> final_fields = fields;
+    final_fields["content"] = content;
     Uri uri = Uri.parse(dotenv.env["domain"]! + "/api/articles");
     String local_token =
         await localStorage.readFromLocalStorage("x-auth-token");
     http.Response response = await http.post(uri,
-        body: json.encode({"fields": fields}),
+        body: json.encode({"fields": final_fields}),
         headers: {
           "x-auth-token": local_token,
           "Content-Type": "application/json"
         });
     print("Article post response: ${response.body}");
     if (json.decode(response.body).containsKey("error")) {
-      throw ErrorDescription(json.decode(response.body)["error"]);
+      throw ErrorDescription((json.decode(response.body)["error"].toString()));
+
     }
     return true;
   } catch (err) {
