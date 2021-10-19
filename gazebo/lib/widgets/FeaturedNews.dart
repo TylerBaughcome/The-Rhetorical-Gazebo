@@ -7,9 +7,10 @@ class FeaturedNews extends StatelessWidget {
   String? subtitle;
   String? author;
   String description = "Eventual description...";
+  dynamic onTap;
   //add images later
   FeaturedNews(
-      {@required this.title, this.subtitle, @required this.author, Key? key})
+      {@required this.title, this.subtitle, @required this.author, @required this.onTap, Key? key})
       : super(key: key);
 
   @override
@@ -17,7 +18,7 @@ class FeaturedNews extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Article())),
+        onTap: onTap,
         child: RoundedContainer(
           borderRadius: BorderRadius.circular(4.0),
           elevation: 4,

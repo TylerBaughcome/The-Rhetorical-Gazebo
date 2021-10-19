@@ -13,7 +13,7 @@ function parseDocument(document){
             bold = false
             italic = false
             underline = false
-            ret_string +="|*"
+            ret_string +="*"
             if(document[i]["paragraph"]["elements"][j]["textRun"]["textStyle"]["bold"]){
                 bold = true
                 ret_string +="b"
@@ -36,7 +36,7 @@ function parseDocument(document){
             if(underline){
                 ret_string += 'u'
             }
-            ret_string +="*|"
+            ret_string +="*"
         }
     }
     }

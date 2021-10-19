@@ -6,6 +6,27 @@
 import 'package:flutter/material.dart';
 
 class Article extends StatelessWidget {
+  String? title;
+  String? subtitle;
+  String? genre;
+  String? author;
+  RichText? text = RichText(
+      text: TextSpan(children: [
+    TextSpan(
+        text:
+            'This article is missing its appropriate text. Please contact therhetoricalgazebo@gmail.com.',
+        style: TextStyle(color: Colors.black)),
+  ]));
+
+  //add images later
+  Article(
+      {@required this.title,
+      this.subtitle,
+      @required this.genre,
+      @required this.author,
+      @required this.text,
+      Key? key})
+      : super(key: key);
   static final String path = "lib/src/pages/blog/article1.dart";
   @override
   Widget build(BuildContext context) {
@@ -14,11 +35,9 @@ class Article extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
-            onPressed: () =>
-              Navigator.pop(context)
-            ),
-        title: Text('Article One'),
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context)),
+        title: Text(title!),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -46,7 +65,7 @@ class Article extends StatelessWidget {
                       ),
                       SizedBox(width: 10.0),
                       Text(
-                        "Technology",
+                        genre!,
                         style: TextStyle(color: Colors.white),
                       )
                     ],
@@ -72,37 +91,17 @@ class Article extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    "Lorem ipsum dolor sit amet",
+                    subtitle!,
                     style: Theme.of(context).textTheme.title,
                   ),
                   Divider(),
                   SizedBox(
                     height: 10.0,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.favorite_border),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("20.2k"),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Icon(Icons.comment),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Text("2.2k"),
-                    ],
-                  ),
                   SizedBox(
                     height: 10.0,
                   ),
-                  Text(
-                    "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, ullam? Fuga doloremque repellendus aut sequi officiis dignissimos, enim assumenda tenetur reprehenderit quam error, accusamus ipsa? Officiis voluptatum sequi voluptas omnis.",
-                    textAlign: TextAlign.justify,
-                  )
+                  text!,
                 ],
               ),
             ),

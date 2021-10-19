@@ -5,6 +5,8 @@ import "package:google_fonts/google_fonts.dart";
 import "package:flutter_spinkit/flutter_spinkit.dart";
 import "./requests/requests.dart";
 import "../widgets/FeaturedNews.dart";
+import "../widgets/Article.dart";
+import '../functions/parsers.dart';
 
 const Color dotInactive = Color(0x33000000);
 
@@ -18,10 +20,21 @@ class _HomeState extends State<Home> {
   bool _loading = true;
   Future<void> init() async {
     var digest = await get_home_digest();
-    print(digest);
     digest["featured"]!.forEach((element) {
+      //Convert text to list rich text with text span
+      RichText allText = convertText(element["content"]);
       setState(() {
         featured_news_widgets.add(FeaturedNews(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Article(
+                        title: element["title"],
+                        genre: element["genre"],
+                        subtitle: element["subtitle"],
+                        author: element["author"],
+                        text: allText
+                        ))),
             title: element["title"],
             subtitle: element["subtitle"],
             author: element["author"]));
