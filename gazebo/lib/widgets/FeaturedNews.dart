@@ -3,10 +3,10 @@ import "RoundedContainer.dart";
 import "Article.dart";
 
 class FeaturedNews extends StatelessWidget {
+  //TODO: Consider adding description to display with featured news (image too)
   String? title;
   String? subtitle;
   String? author;
-  String description = "Eventual description...";
   dynamic onTap;
   //add images later
   FeaturedNews(
@@ -26,10 +26,13 @@ class FeaturedNews extends StatelessWidget {
           child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
             Text(
               this.title!,
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
             ),
             SizedBox(height: MediaQuery.of(context).size.height / 25),
-            Row(children: [Text(description)])
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(children: [Text(subtitle == null ? "" : subtitle!, style: TextStyle(fontSize: 18))]),
+            )
           ]))),
     );
   }

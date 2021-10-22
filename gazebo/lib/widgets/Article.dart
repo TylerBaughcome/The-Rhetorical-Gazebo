@@ -6,6 +6,9 @@
 import 'package:flutter/material.dart';
 
 class Article extends StatelessWidget {
+  Map<String, Widget> genre_icons = {
+    //Map icons to genres here
+  };
   String? title;
   String? subtitle;
   String? genre;
@@ -59,6 +62,7 @@ class Article extends StatelessWidget {
                   right: 20.0,
                   child: Row(
                     children: <Widget>[
+                      //TODO: Associate icon with genre
                       Icon(
                         Icons.slideshow,
                         color: Colors.white,

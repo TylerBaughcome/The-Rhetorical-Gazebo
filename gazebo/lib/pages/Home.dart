@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:gazebo/pages/Genre.dart';
 import "../widgets/RoundedContainer.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:flutter_spinkit/flutter_spinkit.dart";
@@ -17,6 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Widget> featured_news_widgets = [];
+  Widget popular_column = Column(children: []);
   bool _loading = true;
   Future<void> init() async {
     var digest = await get_home_digest();
@@ -33,12 +35,19 @@ class _HomeState extends State<Home> {
                         genre: element["genre"],
                         subtitle: element["subtitle"],
                         author: element["author"],
-                        text: allText
-                        ))),
+                        text: allText))),
             title: element["title"],
             subtitle: element["subtitle"],
             author: element["author"]));
       });
+    });
+    List<Widget> pop_content_util = [];
+    print(digest["popular"]);
+    digest["popular"]!.forEach((element) {
+      pop_content_util.add(_buildListItem(Colors.blue, element));
+    });
+    setState(() {
+      popular_column = Column(children: pop_content_util);
     });
   }
 
@@ -94,45 +103,54 @@ class _HomeState extends State<Home> {
                 _buildFeaturedNews(),
                 const SizedBox(height: 10.0),
                 _buildHeading("Popular posts"),
-                _buildListItem(Colors.green.shade200),
-                _buildListItem(Colors.red.shade200),
-                _buildListItem(Colors.blue.shade200),
-                _buildListItem(Colors.red.shade200),
-                _buildHeading("Browse by category"),
+                popular_column,
+                _buildHeading("Browse by genre"),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: Container(
+                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [Text("Creative Writing and Satire", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
                           height: 100,
                           width: 100,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                            color: Colors.green,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
+                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [Text("Actual News", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
                           height: 100,
                           width: 100,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                            color: Colors.black,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
+                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [Text("Politics", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
                           height: 100,
                           width: 100,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                            color: Colors.amber,
                           ),
                         ),
                       ),
@@ -145,34 +163,52 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                       Expanded(
                         child: Container(
+                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [Text("Sports", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
                           height: 100,
                           width: 100,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                            color: Colors.red,
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
+                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [Text("Books and Film", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
                           height: 100,
                           width: 100,
                           margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                            color: Colors.blue,
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.green.shade200,
+                        child: GestureDetector(
+                          onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => GenrePage(genre: "Opinion"))),
+                          child: Container(
+                              child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [Text("Opinion", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.purple,
+                            ),
                           ),
                         ),
                       ),
@@ -184,7 +220,7 @@ class _HomeState extends State<Home> {
           );
   }
 
-  Widget _buildListItem(Color color) {
+  Widget _buildListItem(Color color, Map<String, dynamic> content) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 1.5, 0.0, 1.5),
       child: InkWell(
@@ -206,12 +242,12 @@ class _HomeState extends State<Home> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Lorem ipsum dolor sit amet, consecteutur adsd Ut adipisicing dolore incididunt minim",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      content["title"],
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 10.0),
                     Text(
-                        "Mollit aliquip fugiat veniam reprehenderit irure commodo eu aute ex commodo."),
+                        content["subtitle"] != null ? content["subtitle"]! : "", style: TextStyle(fontSize: 14)),
                   ],
                 ),
               ),

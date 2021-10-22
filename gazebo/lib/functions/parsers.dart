@@ -4,48 +4,48 @@ import 'package:flutter/widgets.dart';
 
 TextStyle getStyle(bool bold, bool italics, bool underline) {
   if (bold && !italics && !underline) {
-    return TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
+    return TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18);
   } else if (bold && italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (bold && italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (!bold && italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (!bold && !italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (!bold && !italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (bold && !italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else if (!bold && italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.italic,
-        color: Colors.black);
+        color: Colors.black, fontSize: 18);
   } else {
-    return TextStyle(color: Colors.black);
+    return TextStyle(color: Colors.black, fontSize: 18);
   }
 }
 

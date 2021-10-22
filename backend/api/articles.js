@@ -39,7 +39,7 @@ router.get("/digest", async (req, res)=> {
     //Get featured, popular, and recommended eventually (for those topics the user selects)
     try{
         var featured_articles = await Article.find({isFeatured: true}).limit(4);
-        var popular_articles = await Article.find({isFeatured: false}).sort({clicks:-1}).limit(5); 
+        var popular_articles = await Article.find({/*isFeatured:False in future*/}).sort({clicks:-1}).limit(5); 
        
         var data = {};
         data["featured"] = featured_articles;
@@ -89,6 +89,7 @@ router.get("/:genre", async (req, res)=> {
     res.json(data);
     }
     catch(err){
+        const genre = req.params.genre;
         console.error(`Error getting ${genre} articles: ${err}`);
         res.status(500).send("Server error");
     }
