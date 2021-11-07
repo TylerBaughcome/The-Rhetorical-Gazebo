@@ -93,6 +93,18 @@ router.get("/:genre", async (req, res)=> {
         console.error(`Error getting ${genre} articles: ${err}`);
         res.status(500).send("Server error");
     }
-})
-
+});
+router.put("/click/:article_id", async (req, res)=> {
+    try{
+    const article = await Article.updateOne({_id: req.params.article_id}, {$inc: {clicks: 1}});
+    if(!article){
+        return res.status(404).json({error: {msg: "Article not found"}});
+    }
+    return res.json({"success": 1});
+    }
+    catch(err){
+        console.error("Error updating article:", err);
+        return res.status(500).send("Server error");
+    }
+});
 module.exports = router;

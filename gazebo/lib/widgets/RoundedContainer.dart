@@ -25,21 +25,14 @@ class RoundedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: margin ?? const EdgeInsets.all(0),
-      color: color,
-      elevation: elevation ?? 0,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: borderRadius ?? BorderRadius.circular(20.0),
-      ),
-      child: Container(
+    return Container(
         alignment: alignment,
         height: height,
         width: width,
         padding: padding,
-        child: child,
-      ),
+
+        child: ClipRRect(child: child, borderRadius: BorderRadius.circular(15.0)),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
     );
   }
 }

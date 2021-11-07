@@ -4,6 +4,8 @@
   */
 
 import 'package:flutter/material.dart';
+import "../pages/requests/requests.dart";
+import "../pages/Genre.dart";
 
 class Article extends StatelessWidget {
   Map<String, Widget> genre_icons = {
@@ -13,6 +15,9 @@ class Article extends StatelessWidget {
   String? subtitle;
   String? genre;
   String? author;
+  String? image_link;
+  String? article_id;
+  bool first_build = true;
   RichText? text = RichText(
       text: TextSpan(children: [
     TextSpan(
@@ -23,18 +28,21 @@ class Article extends StatelessWidget {
 
   //add images later
   Article(
-      {@required this.title,
+      {required this.title,
       this.subtitle,
-      @required this.genre,
-      @required this.author,
-      @required this.text,
+      required this.article_id,
+      required this.genre,
+      required this.author,
+      required this.text,
+      required this.image_link,
       Key? key})
       : super(key: key);
-  static final String path = "lib/src/pages/blog/article1.dart";
   @override
   Widget build(BuildContext context) {
-    String image =
-        "https://static.toiimg.com/photo/msid-58515713,width-96,height-65.cms";
+    if (first_build) {
+      add_click(article_id!);
+      first_build = false;
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -51,28 +59,36 @@ class Article extends StatelessWidget {
                     height: 300,
                     width: double.infinity,
                     child: Image.network(
-                      image,
+                      image_link!,
+                      //good image: https://static.toiimg.com/photo/msid-58515713,width-96,height-65.cms
+                      //ideal resolution/ratio : 3:2 (1000x667)
                       // placeholder: (context, url) => Center(child: CircularProgressIndicator()),
                       // errorWidget: (context, url, error) => Image.asset('assets/placeholder.jpg',fit: BoxFit.cover,),
                       fit: BoxFit.cover,
                     )),
                 Positioned(
-                  bottom: 20.0,
-                  left: 20.0,
-                  right: 20.0,
-                  child: Row(
-                    children: <Widget>[
-                      //TODO: Associate icon with genre
-                      Icon(
-                        Icons.slideshow,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 10.0),
-                      Text(
-                        genre!,
-                        style: TextStyle(color: Colors.white),
-                      )
-                    ],
+                  bottom: MediaQuery.of(context).size.height * 0.03,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GenrePage(genre: genre!)));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(width: 15),
+                        Text(
+                          genre!,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Icon(Icons.slideshow, color: Colors.white, size: 20),
+                      ],
+                    ),
                   ),
                 )
               ],

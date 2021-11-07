@@ -23,6 +23,7 @@ connectDB()
 app.use('/api/auth', require('./api/auth'));
 app.use('/api/articles', require('./api/articles'));
 app.use('/api/users', require('./api/users'));
+app.use('/api/uploads', require('./api/uploads'));
 const port = process.env.PORT || 3000;
 
 // Start the server

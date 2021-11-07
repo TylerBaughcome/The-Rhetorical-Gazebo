@@ -17,6 +17,10 @@ const RequestSchema = new Schema({
     type: Boolean,
     required:true
   },
+  image_link: {
+    type: String,
+    required: false 
+  },
   author: {
     type: String,
     required: true

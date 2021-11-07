@@ -26,26 +26,33 @@ class _HomeState extends State<Home> {
       //Convert text to list rich text with text span
       RichText allText = convertText(element["content"]);
       setState(() {
+        String image_link = element["image_link"] != null
+            ? element["image_link"]
+            : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg";
         featured_news_widgets.add(FeaturedNews(
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => Article(
+                        article_id: element["_id"],
                         title: element["title"],
                         genre: element["genre"],
                         subtitle: element["subtitle"],
                         author: element["author"],
+                        image_link: image_link,
                         text: allText))),
             title: element["title"],
+            image_link: element["image_link"],
             subtitle: element["subtitle"],
             author: element["author"]));
       });
     });
     List<Widget> pop_content_util = [];
-    print(digest["popular"]);
-    digest["popular"]!.forEach((element) {
-      pop_content_util.add(_buildListItem(Colors.blue, element));
-    });
+    for (var i = 0; i < digest["popular"].length-1; i+=2) {
+      var element1 = digest["popular"][i];
+      var element2 = digest["popular"][i+1];
+      pop_content_util.add(_buildListItem(element1, element2));
+    } 
     setState(() {
       popular_column = Column(children: pop_content_util);
     });
@@ -62,38 +69,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //check if articles loaded
-
     return _loading
         ? SpinKitWanderingCubes(color: Colors.black)
         : Scaffold(
-            drawer: Drawer(
-                child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                  child: Text('Drawer Header'),
-                ),
-                ListTile(
-                  title: Text('Item 1'),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-                ListTile(
-                  title: Text('Item 2'),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                  },
-                ),
-              ],
-            )),
             bottomNavigationBar: BottomAppBar(
               color: Colors.white,
             ),
@@ -104,53 +82,114 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 10.0),
                 _buildHeading("Popular posts"),
                 popular_column,
+                SizedBox(height:8.0),
                 _buildHeading("Browse by genre"),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Creative Writing and Satire", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.green,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => GenrePage(
+                                        genre: "Creative Writing and Satire")));
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Creative Writing and Satire",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.green,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Actual News", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenrePage(genre: "Actual News")));
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Actual News",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Politics", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.amber,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenrePage(genre: "Politics")));
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Politics",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.amber,
+                            ),
                           ),
                         ),
                       ),
@@ -162,46 +201,98 @@ class _HomeState extends State<Home> {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Sports", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.red,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenrePage(genre: "Books and Film")));
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Sports",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
-                        child: Container(
-                            child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Books and Film", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
-                          height: 100,
-                          width: 100,
-                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.blue,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GenrePage(genre: "Books and Film")));
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Books and Film",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
+                            height: 100,
+                            width: 100,
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue,
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: GestureDetector(
                           onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => GenrePage(genre: "Opinion"))),
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      GenrePage(genre: "Opinion"))),
                           child: Container(
-                              child: Padding(padding: EdgeInsets.fromLTRB(2.0, 0,0,0), child: Column(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(2.0, 0, 0, 0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [Text("Opinion", textAlign: TextAlign.center, style: TextStyle(color: Colors.white.withOpacity(.9))), Icon(Icons.book, color: Colors.white.withOpacity(.9))],),),
+                                children: [
+                                  Text("Opinion",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white.withOpacity(.9))),
+                                  Icon(Icons.book,
+                                      color: Colors.white.withOpacity(.9))
+                                ],
+                              ),
+                            ),
                             height: 100,
                             width: 100,
                             margin: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -220,41 +311,72 @@ class _HomeState extends State<Home> {
           );
   }
 
-  Widget _buildListItem(Color color, Map<String, dynamic> content) {
+  Widget _buildListItem(Map<String, dynamic> content1, Map<String,dynamic> content2) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 1.5, 0.0, 1.5),
-      child: InkWell(
-        onTap: () {},
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          child: Row(
-            children: <Widget>[
+      padding: const EdgeInsets.fromLTRB(4.0, 5, 4.0, 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InkWell(
+             onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Article(
+                        article_id: content1["_id"],
+                        title: content1["title"],
+                        genre: content1["genre"],
+                        subtitle: content1["subtitle"],
+                        author: content1["author"],
+                        image_link: content1["image_link"] != null
+                        ? content1["image_link"] : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
+                        text: convertText(content1["content"])))),
+            child: Column(children: [
               Container(
-                height: 100,
-                width: 100,
-                margin: const EdgeInsets.only(right: 10.0),
-                decoration: BoxDecoration(
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  color: color,
+                  child: Image.network(
+                    content1["image_link"] != null ? content1["image_link"]! : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
+                    fit: BoxFit.cover,
+                  ),
                 ),
+                height: 133*.9,
+                width: 200*.9,
               ),
-              Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      content["title"],
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                        content["subtitle"] != null ? content["subtitle"]! : "", style: TextStyle(fontSize: 14)),
-                  ],
-                ),
-              ),
-            ],
+              Text(content1["title"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+              Text(content1["subtitle"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey)),
+            ]),
           ),
-        ),
-      ),
+          SizedBox(width: 10),
+          InkWell(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Article(
+                        article_id: content2["_id"],
+                        title: content2["title"],
+                        genre: content2["genre"],
+                        subtitle: content2["subtitle"],
+                        author: content2["author"],
+                        image_link: content2["image_link"] != null
+                        ? content2["image_link"] : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
+                        text: convertText(content2["content"])))),
+            child: Column(children: [
+              Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    content2["image_link"] != null ? content2["image_link"]! : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                height: 133*.9,
+                width: 200*.9,
+              ),
+              Text(content2["title"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+              Text(content2["subtitle"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey)),
+            ]),
+          ),
+          ],)
     );
   }
 
@@ -293,43 +415,41 @@ class _HomeState extends State<Home> {
     );
   }
 
-  RoundedContainer _buildFeaturedNews() {
-    return RoundedContainer(
-      height: 270,
-      borderRadius: BorderRadius.circular(0),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
+  Container _buildFeaturedNews() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.46,
+      child:
+      Column(
+        children: [
+        SizedBox(height: 5.0),
+        Text(
             "Featured News",
             textAlign: TextAlign.center,
-            style: GoogleFonts.newsCycle(
+            style: TextStyle(
                 letterSpacing: 0.75,
                 fontSize: 26.0,
                 color: Colors.black,
                 fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 2.5),
-          Expanded(
-            child: Swiper(
-              pagination: const SwiperPagination(
-                  builder: DotSwiperPaginationBuilder(
-                    color: dotInactive,
-                    activeColor: Colors.black,
-                  ),
-                  margin: const EdgeInsets.only()),
-              viewportFraction: 0.9,
-              autoplay: true,
-              itemCount: featured_news_widgets.length,
-              loop: true,
-              itemBuilder: (context, index) {
-                return featured_news_widgets[index];
-              },
-            ),
-          ),
-        ],
+        SizedBox(height: 7.5),
+       Expanded(
+        child: Swiper(
+          layout: SwiperLayout.DEFAULT,
+          pagination: const SwiperPagination(
+              builder: DotSwiperPaginationBuilder(
+                color: dotInactive,
+                activeColor: Colors.black,
+              ),
+              margin: const EdgeInsets.only()),
+          viewportFraction: 0.9,
+          autoplay: true,
+          itemCount: featured_news_widgets.length,
+          loop: true,
+          itemBuilder: (context, index) {
+            return featured_news_widgets[index];
+          },
+        ),
       ),
-    );
+        ]));
   }
 }

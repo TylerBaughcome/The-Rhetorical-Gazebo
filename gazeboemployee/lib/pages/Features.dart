@@ -34,6 +34,8 @@ class _EditPageState extends State<EditPage> {
   String genre = "";
   Map<String, TextEditingController> submissionValues = {};
   bool showPassword = false;
+  bool isNetworkImage = false;
+  String? filepath;
   Map<String, Map<String, dynamic>> runningDocs = {};
   Widget articleImage = Container(
       width: 130,
@@ -54,6 +56,8 @@ class _EditPageState extends State<EditPage> {
   void imageCallback(String imageLink, {isLocal = true}) {
     if (isLocal) {
       setState(() {
+        isNetworkImage = false;
+        filepath = imageLink;
         Image localImage = Image.file(File(imageLink));
         articleImage = Container(
             width: 130,
@@ -73,6 +77,8 @@ class _EditPageState extends State<EditPage> {
       });
     } else {
       setState(() {
+        isNetworkImage = true;
+        filepath = imageLink;
         articleImage = CachedNetworkImage(
           imageUrl: imageLink,
           imageBuilder: (context, imageProvider) {
@@ -129,6 +135,7 @@ class _EditPageState extends State<EditPage> {
         );
       });
     }
+    print("NETWORK IMAGE: $isNetworkImage");
   }
 
   @override
@@ -301,6 +308,14 @@ class _EditPageState extends State<EditPage> {
                       submissionVal["googleDocId"] = widget.document["id"];
                       submissionVal['isFeatured'] = isFeatured;
                       submissionVal["genre"] = genre;
+                      if (filepath != null) {
+                        if (isNetworkImage) {
+                          submissionVal["image"] = filepath!;
+                        } else {
+                          submissionVal["image"] = File(filepath!);
+                        }
+                        submissionVal["image_is_local"] = !isNetworkImage;
+                      }
                       runningDocs[widget.document["id"]] = submissionVal;
 
                       if (widget.documentsIndex >=
