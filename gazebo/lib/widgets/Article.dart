@@ -6,12 +6,16 @@
 import 'package:flutter/material.dart';
 import "../pages/requests/requests.dart";
 import "../pages/Genre.dart";
+import "package:google_fonts/google_fonts.dart";
+import 'package:intl/date_symbol_data_local.dart';
+import "package:intl/intl.dart";
 
 class Article extends StatelessWidget {
   Map<String, Widget> genre_icons = {
     //Map icons to genres here
   };
   String? title;
+  String? date;
   String? subtitle;
   String? genre;
   String? author;
@@ -23,7 +27,7 @@ class Article extends StatelessWidget {
     TextSpan(
         text:
             'This article is missing its appropriate text. Please contact therhetoricalgazebo@gmail.com.',
-        style: TextStyle(color: Colors.black)),
+        style: TextStyle(color: Colors.black, height: 1.5)),
   ]));
 
   //add images later
@@ -33,18 +37,21 @@ class Article extends StatelessWidget {
       required this.article_id,
       required this.genre,
       required this.author,
+      required this.date,
       required this.text,
       required this.image_link,
       Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting();
     if (first_build) {
       add_click(article_id!);
       first_build = false;
     }
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black87,
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context)),
@@ -56,14 +63,12 @@ class Article extends StatelessWidget {
             Stack(
               children: <Widget>[
                 Container(
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.36,
                     width: double.infinity,
                     child: Image.network(
-                      image_link!,
-                      //good image: https://static.toiimg.com/photo/msid-58515713,width-96,height-65.cms
-                      //ideal resolution/ratio : 3:2 (1000x667)
-                      // placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-                      // errorWidget: (context, url, error) => Image.asset('assets/placeholder.jpg',fit: BoxFit.cover,),
+                      image_link != null
+                          ? image_link!
+                          : 'https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg',
                       fit: BoxFit.cover,
                     )),
                 Positioned(
@@ -102,7 +107,8 @@ class Article extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: Text("Oct 21, 2017"),
+                        child: Text(DateFormat.yMMMMd('en_US')
+                            .format(DateTime.parse(date!))),
                       ),
                       IconButton(
                         icon: Icon(Icons.share),
@@ -110,18 +116,30 @@ class Article extends StatelessWidget {
                       )
                     ],
                   ),
-                  Text(
-                    subtitle!,
-                    style: Theme.of(context).textTheme.title,
-                  ),
+                  Row(children: [
+                    Text(subtitle!,
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                    SizedBox(width: 2.5),
+                    Text("by"),
+                    SizedBox(width: 2.5),
+                    Text(author!, style: TextStyle(fontWeight: FontWeight.w500))
+                  ]),
                   Divider(),
                   SizedBox(
                     height: 10.0,
                   ),
-                  SizedBox(
-                    height: 10.0,
+                  Center(
+                    child: Text(title!,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.merriweather(
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                MediaQuery.of(context).size.height / 32.5)),
                   ),
-                  text!,
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: text!,
+                  ),
                 ],
               ),
             ),

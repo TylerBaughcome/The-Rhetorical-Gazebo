@@ -51,6 +51,7 @@ class _GenrePageState extends State<GenrePage> {
             body: SpinKitWanderingCubes(color: Colors.black))
         : Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.black,
                 title: Text(widget.genre!),
                 centerTitle: true,
                 leading: IconButton(

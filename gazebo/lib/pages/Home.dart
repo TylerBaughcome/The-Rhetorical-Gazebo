@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:gazebo/pages/Genre.dart';
+import "GenreBrowse.dart";
 import "../widgets/RoundedContainer.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:flutter_spinkit/flutter_spinkit.dart";
 import "./requests/requests.dart";
 import "../widgets/FeaturedNews.dart";
+import '../widgets/ListItem.dart';
 import "../widgets/Article.dart";
 import '../functions/parsers.dart';
+import "Popular.dart";
 
 const Color dotInactive = Color(0x33000000);
 
@@ -18,6 +21,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Widget> featured_news_widgets = [];
+  List<dynamic> popular_content = [];
   Widget popular_column = Column(children: []);
   bool _loading = true;
   Future<void> init() async {
@@ -34,6 +38,7 @@ class _HomeState extends State<Home> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Article(
+                        date: element["date"],
                         article_id: element["_id"],
                         title: element["title"],
                         genre: element["genre"],
@@ -48,12 +53,14 @@ class _HomeState extends State<Home> {
       });
     });
     List<Widget> pop_content_util = [];
-    for (var i = 0; i < digest["popular"].length-1; i+=2) {
+    for (var i = 0; i < digest["popular"].length - 1; i += 2) {
       var element1 = digest["popular"][i];
-      var element2 = digest["popular"][i+1];
-      pop_content_util.add(_buildListItem(element1, element2));
-    } 
+      var element2 = digest["popular"][i + 1];
+      pop_content_util.add(buildListItem(element1, element2, context,1));
+
+    }
     setState(() {
+      popular_content = digest["popular"];
       popular_column = Column(children: pop_content_util);
     });
   }
@@ -79,11 +86,23 @@ class _HomeState extends State<Home> {
             body: ListView(
               children: <Widget>[
                 _buildFeaturedNews(),
-                const SizedBox(height: 10.0),
-                _buildHeading("Popular posts"),
+                _buildHeading("Popular posts", () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                             PopularArticles(popular_articles: popular_content, context: context)));
+
+                }),
                 popular_column,
-                SizedBox(height:8.0),
-                _buildHeading("Browse by genre"),
+                SizedBox(height: 8.0),
+                _buildHeading("Browse by genre", () {
+                   Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                             GenreBrowse()));
+                }),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
@@ -311,76 +330,7 @@ class _HomeState extends State<Home> {
           );
   }
 
-  Widget _buildListItem(Map<String, dynamic> content1, Map<String,dynamic> content2) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4.0, 5, 4.0, 5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InkWell(
-             onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Article(
-                        article_id: content1["_id"],
-                        title: content1["title"],
-                        genre: content1["genre"],
-                        subtitle: content1["subtitle"],
-                        author: content1["author"],
-                        image_link: content1["image_link"] != null
-                        ? content1["image_link"] : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
-                        text: convertText(content1["content"])))),
-            child: Column(children: [
-              Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    content1["image_link"] != null ? content1["image_link"]! : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                height: 133*.9,
-                width: 200*.9,
-              ),
-              Text(content1["title"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-              Text(content1["subtitle"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey)),
-            ]),
-          ),
-          SizedBox(width: 10),
-          InkWell(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Article(
-                        article_id: content2["_id"],
-                        title: content2["title"],
-                        genre: content2["genre"],
-                        subtitle: content2["subtitle"],
-                        author: content2["author"],
-                        image_link: content2["image_link"] != null
-                        ? content2["image_link"] : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
-                        text: convertText(content2["content"])))),
-            child: Column(children: [
-              Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    content2["image_link"] != null ? content2["image_link"]! : "https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/default.jpg",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                height: 133*.9,
-                width: 200*.9,
-              ),
-              Text(content2["title"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-              Text(content2["subtitle"], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey)),
-            ]),
-          ),
-          ],)
-    );
-  }
-
-  Padding _buildHeading(String title) {
+  Padding _buildHeading(String title, Function callback) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -408,7 +358,9 @@ class _HomeState extends State<Home> {
               borderRadius: BorderRadius.circular(5.0),
             ),
             padding: const EdgeInsets.all(2.0),
-            onPressed: () {},
+            onPressed: () {
+              callback();
+            },
           ),
         ],
       ),
@@ -417,12 +369,10 @@ class _HomeState extends State<Home> {
 
   Container _buildFeaturedNews() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.46,
-      child:
-      Column(
-        children: [
-        SizedBox(height: 5.0),
-        Text(
+        height: MediaQuery.of(context).size.height * 0.40,
+        child: Column(children: [
+          SizedBox(height: 5.0),
+          Text(
             "Featured News",
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -431,25 +381,25 @@ class _HomeState extends State<Home> {
                 color: Colors.black,
                 fontWeight: FontWeight.w600),
           ),
-        SizedBox(height: 7.5),
-       Expanded(
-        child: Swiper(
-          layout: SwiperLayout.DEFAULT,
-          pagination: const SwiperPagination(
-              builder: DotSwiperPaginationBuilder(
-                color: dotInactive,
-                activeColor: Colors.black,
-              ),
-              margin: const EdgeInsets.only()),
-          viewportFraction: 0.9,
-          autoplay: true,
-          itemCount: featured_news_widgets.length,
-          loop: true,
-          itemBuilder: (context, index) {
-            return featured_news_widgets[index];
-          },
-        ),
-      ),
+          SizedBox(height: 7.5),
+          Expanded(
+            child: Swiper(
+              layout: SwiperLayout.DEFAULT,
+              pagination: const SwiperPagination(
+                  builder: DotSwiperPaginationBuilder(
+                    color: dotInactive,
+                    activeColor: Colors.black,
+                  ),
+                  margin: const EdgeInsets.only()),
+              viewportFraction: 0.9,
+              autoplay: true,
+              itemCount: featured_news_widgets.length,
+              loop: true,
+              itemBuilder: (context, index) {
+                return featured_news_widgets[index];
+              },
+            ),
+          ),
         ]));
   }
 }

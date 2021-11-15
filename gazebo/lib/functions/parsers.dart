@@ -1,51 +1,52 @@
 import "package:flutter/material.dart";
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 TextStyle getStyle(bool bold, bool italics, bool underline) {
   if (bold && !italics && !underline) {
-    return TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18);
+    return TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16);
   } else if (bold && italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (bold && italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (!bold && italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (!bold && !italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (!bold && !italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.normal,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (bold && !italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else if (!bold && italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.normal,
         fontStyle: FontStyle.italic,
-        color: Colors.black, fontSize: 18);
+        color: Colors.black, fontSize: 16);
   } else {
-    return TextStyle(color: Colors.black, fontSize: 18);
+    return TextStyle(color: Colors.black, fontSize: 16);
   }
 }
 
@@ -89,5 +90,6 @@ RichText convertText(String content) {
       substring += content[i];
     }
   }
-  return RichText(text: TextSpan(children: sequential_text));
+  return RichText(text: TextSpan(children: sequential_text, style:
+       GoogleFonts.merriweather(textStyle: TextStyle(height: 1.5, fontWeight: FontWeight.w300))));
 }

@@ -39,7 +39,7 @@ router.get("/digest", async (req, res)=> {
     //Get featured, popular, and recommended eventually (for those topics the user selects)
     try{
         var featured_articles = await Article.find({isFeatured: true}).limit(4);
-        var popular_articles = await Article.find({/*isFeatured:False in future*/}).sort({clicks:-1}).limit(5); 
+        var popular_articles = await Article.find({isFeatured: false}).sort({clicks:-1}).limit(10); 
        
         var data = {};
         data["featured"] = featured_articles;
@@ -57,12 +57,15 @@ router.get("/popular", async (req, res)=> {
     //may want to check those with greatest rate of viewing eventually
     //Can now just say newest or something
     try{
-    const newest_articles = Article.find({$sort: {date: -1}}).limit(4);
-    res.json({"newest": newest_articles});
+    var popular_articles = await Article.find({isFeatured: false}).sort({clicks:-1}).limit(10); 
+    if(!popular_articles){
+        return res.json({"popular": []});
+    }
+    return res.json({"popular": popular_articles});
     }
     catch(err){
         console.error("Error getting popular articles:", err);
-        res.status(500).send("Server error");
+        return res.status(500).send("Server error");
     }
 })
 router.get("/featured", async (req,res) => {

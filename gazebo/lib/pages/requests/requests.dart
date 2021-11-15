@@ -14,7 +14,7 @@ Future<Map<String, dynamic>> get_home_digest() async {
     return data["digest"];
   } catch (err) {
     //figure out what to return if response is invalid
-    print("Error getting featured articles; $err");
+    print("Error getting digest articles: $err");
     return {};
   }
 }
