@@ -42,6 +42,7 @@ class _StartscreenState extends State<Startscreen>
         context,
         MaterialPageRoute(builder: (context) => Login()),
       );
+      super.initState();
     });
   }
 

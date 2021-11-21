@@ -90,12 +90,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Merriweather
-      fonts:
-        - asset: assets/Merriweather/Merriweather-Light.ttf
-        - asset: assets/Merriweather/Merriweather-Italic.ttf
-          style: italic
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
