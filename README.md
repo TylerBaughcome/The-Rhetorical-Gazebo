@@ -1,6 +1,6 @@
 # The-Rhetorical-Gazebo
 A satirical news website designed to empower writers and mock the age of misinformation<br>
-![alt text](https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/Screenshot_20211122-170009.jpg)
+<img src="https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/Screenshot_20211122-170009.jpg" alt="drawing" width="200"/>
 # Installation
 After cloning the repo, you will need the Flutter SDK. To install Flutter, please visit
 https://docs.flutter.dev/get-started/install.<br/>
@@ -15,4 +15,4 @@ locally or on a device of your choice, please reach out, and we'll be able to he
 #Using the application
 The application has two parts, content upload and content reading. Uploading content requires an account as well as approval
 from a Rhetorical Gazebo administrator. For instance, here is the registration page for becoming a writer.
-![alt text](https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/Screenshot_20211122-165745.jpg)
+<img src="https://therhetoricalgazebo-media.s3.us-east-2.amazonaws.com/Screenshot_20211122-165745.jpg" alt="drawing" width="200"/>
