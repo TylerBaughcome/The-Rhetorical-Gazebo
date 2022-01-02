@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gazebo/employee/googleapi/auth.dart';
+import 'package:gazebo/employee/utilities/SettingsPopup.dart';
 import "package:http/http.dart";
 import "../googleapi/drive.dart";
 import "../utilities/widgets.dart";
@@ -155,23 +156,19 @@ class _EmployeeHomeState extends State<EmployeeHome> {
               child: Stack(
             children: [
               SingleChildScrollView(child: Column(children: documentTiles)),
-               Align(
-                 alignment: Alignment.bottomRight,
-                 child: Padding(
-                   padding: const EdgeInsets.all(20.0),
-                   child: FloatingActionButton(
-                     backgroundColor: Colors.black,
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: FloatingActionButton(
+                      backgroundColor: Colors.black,
                       onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Choice(),
-                            ));
+                        SettingsPopup(context);
                       },
-                      child: Image.asset("assets/logo.png", scale: 11, color: Colors.white)),
-                 ),
-               )
-
+                      child: Image.asset("assets/logo.png",
+                          scale: 11, color: Colors.white)),
+                ),
+              )
             ],
           )));
     }

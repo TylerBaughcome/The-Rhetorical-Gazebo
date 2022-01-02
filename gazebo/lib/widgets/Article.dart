@@ -111,7 +111,7 @@ class Article extends StatelessWidget {
                             .format(DateTime.parse(date!))),
                       ),
                       IconButton(
-                        icon: Icon(Icons.share),
+                        icon: Icon(Icons.share, color: Colors.transparent),
                         onPressed: () {},
                       )
                     ],
@@ -136,8 +136,9 @@ class Article extends StatelessWidget {
                             fontSize:
                                 MediaQuery.of(context).size.height / 32.5)),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height/50),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(0.0),
                     child: text!,
                   ),
                 ],

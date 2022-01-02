@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import "package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart";
 import 'package:gazebo/pages/Genre.dart';
 import "GenreBrowse.dart";
 import "../widgets/RoundedContainer.dart";
@@ -11,6 +11,7 @@ import '../widgets/ListItem.dart';
 import "../widgets/Article.dart";
 import '../functions/parsers.dart';
 import "Popular.dart";
+import "../employee/auth/choice.dart";
 
 const Color dotInactive = Color(0x33000000);
 
@@ -56,8 +57,7 @@ class _HomeState extends State<Home> {
     for (var i = 0; i < digest["popular"].length - 1; i += 2) {
       var element1 = digest["popular"][i];
       var element2 = digest["popular"][i + 1];
-      pop_content_util.add(buildListItem(element1, element2, context,1));
-
+      pop_content_util.add(buildListItem(element1, element2, context, 1));
     }
     setState(() {
       popular_content = digest["popular"];
@@ -79,9 +79,20 @@ class _HomeState extends State<Home> {
     return _loading
         ? SpinKitWanderingCubes(color: Colors.black)
         : Scaffold(
-            bottomNavigationBar: BottomAppBar(
+          appBar: AppBar(
+            centerTitle: true, 
+            backgroundColor: Colors.black,
+            leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(context,MaterialPageRoute(
+                          builder: (context) => Choice() ));
+            }),
+            title: Image.asset(
+              "assets/logo.png",
+              scale: 10,
               color: Colors.white,
             ),
+          ),
             backgroundColor: Colors.white,
             body: ListView(
               children: <Widget>[
@@ -90,18 +101,15 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                             PopularArticles(popular_articles: popular_content, context: context)));
-
+                          builder: (context) => PopularArticles(
+                              popular_articles: popular_content,
+                              context: context)));
                 }),
                 popular_column,
                 SizedBox(height: 8.0),
                 _buildHeading("Browse by genre", () {
-                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                             GenreBrowse()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => GenreBrowse()));
                 }),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -226,7 +234,7 @@ class _HomeState extends State<Home> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        GenrePage(genre: "Books and Film")));
+                                        GenrePage(genre: "Sports")));
                           },
                           child: Container(
                             child: Padding(

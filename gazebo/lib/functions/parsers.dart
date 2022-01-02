@@ -5,48 +5,56 @@ import 'package:google_fonts/google_fonts.dart';
 
 TextStyle getStyle(bool bold, bool italics, bool underline) {
   if (bold && !italics && !underline) {
-    return TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16);
+    return TextStyle(
+        fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16.5);
   } else if (bold && italics && !underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (bold && italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (!bold && italics && underline) {
     return TextStyle(
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
         fontStyle: FontStyle.italic,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (!bold && !italics && underline) {
     return TextStyle(
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (!bold && !italics && !underline) {
     return TextStyle(
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
         fontStyle: FontStyle.normal,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (bold && !italics && underline) {
     return TextStyle(
         fontWeight: FontWeight.bold,
         fontStyle: FontStyle.normal,
         decoration: TextDecoration.underline,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else if (!bold && italics && !underline) {
     return TextStyle(
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
         fontStyle: FontStyle.italic,
-        color: Colors.black, fontSize: 16);
+        color: Colors.black,
+        fontSize: 16.5);
   } else {
-    return TextStyle(color: Colors.black, fontSize: 16);
+    return TextStyle(color: Colors.black, fontSize: 16.5);
   }
 }
 
@@ -87,9 +95,17 @@ RichText convertText(String content) {
         underline = true;
       }
     } else {
-      substring += content[i];
+      if (content[i] == '\t') {
+        substring+= "     ";
+      }
+      else {
+        substring += content[i];
+      }
     }
   }
-  return RichText(text: TextSpan(children: sequential_text, style:
-       GoogleFonts.merriweather(textStyle: TextStyle(height: 1.5, fontWeight: FontWeight.w300))));
+  return RichText(
+      text: TextSpan(
+          children: sequential_text,
+          style: GoogleFonts.merriweather(
+              textStyle: TextStyle(height: 1.5, fontWeight: FontWeight.w300))));
 }

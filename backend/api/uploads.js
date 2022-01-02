@@ -30,7 +30,7 @@ router.post('/image',upload.single("file"), auth, async (req, res) => {
           var deletePath = req.file.path;
   
           fs.unlink(deletePath, function (err) {
-            if (err) return console.log(err);
+            if (err) return console.log("Error deleting file", err);
             console.log('File deleted from local storage successfully');
           });
           return res.json({"image": data });

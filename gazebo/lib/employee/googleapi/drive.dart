@@ -11,7 +11,6 @@ Future<dynamic> getAllDocuments() async {
     var token = await readFromLocalStorage("google_access_token");
     var testResponse =
         await http.get(url, headers: {"Authorization": "Bearer $token"});
-    print(testResponse.body);
     return json.decode(testResponse.body)["files"];
   } catch (err) {
     print("Error retrieving documents from google drive: $err");

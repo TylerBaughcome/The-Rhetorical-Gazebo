@@ -78,12 +78,16 @@ class FeaturedNews extends StatelessWidget {
                               margin: EdgeInsets.symmetric(
                                   horizontal:
                                       MediaQuery.of(context).size.width * .05),
-                              child: Text(
-                                title!,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  title!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white),
+                                ),
                               ),
                             ),
                             dim[1],
