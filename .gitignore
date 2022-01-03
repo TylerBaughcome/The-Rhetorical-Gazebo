@@ -1,5 +1,4 @@
-*.env
-./config/default.json
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

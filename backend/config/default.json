@@ -1,0 +1,4 @@
+{
+  "jwtSecret": "secret",
+  "mongoURI": "mongodb+srv://admin:Zarathustra42!@cluster0.cz7z2.mongodb.net/TheRhetoricalGazebo?retryWrites=true&w=majority"
+}
