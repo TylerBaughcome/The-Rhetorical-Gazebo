@@ -5,4 +5,4 @@ A satirical news app designed to empower writers and mock the age of misinformat
 
 Please see other repos below for more technical detail.<br>
 [Backend]("https://github.com/TylerBaughcome/RhetoricalGazeboBackend")<br>
-[Backend]("https://github.com/TylerBaughcome/RhetoricalGazeboMobileClien")<br>
+[Backend]("https://github.com/TylerBaughcome/RhetoricalGazeboMobileClient")<br>
